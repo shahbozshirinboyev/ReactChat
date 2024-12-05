@@ -23,7 +23,7 @@ function ChatList() {
         <img src="./avatar.png" alt="" />
         <div className="texts">
           <span>Hane Doe</span>
-          <p>Hellooooo!</p>
+          <p>Hello</p>
         </div>
       </div>
       <div className="item">
