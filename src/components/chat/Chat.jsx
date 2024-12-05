@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./chat.css";
 import EmojiPicker from "emoji-picker-react";
 
 function Chat() {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
+  const endRef = useRef(null);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
     setOpen(false);
@@ -29,7 +34,8 @@ function Chat() {
         <div className="message own">
           <div className="texts">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ducimus.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Accusantium, ducimus.
             </p>
             <span>1 min ago</span>
           </div>
@@ -38,7 +44,8 @@ function Chat() {
           <img src="./avatar.png" alt="" />
           <div className="texts">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ducimus.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Accusantium, ducimus.
             </p>
             <span>1 min ago</span>
           </div>
@@ -46,7 +53,8 @@ function Chat() {
         <div className="message own">
           <div className="texts">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ducimus.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Accusantium, ducimus.
             </p>
             <span>1 min ago</span>
           </div>
@@ -54,10 +62,14 @@ function Chat() {
         <div className="message">
           <img src="./avatar.png" alt="" />
           <div className="texts">
-          <img src="https://images.unsplash.com/photo-1733246849141-50776096f51c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+            <img
+              src="https://images.unsplash.com/photo-1733246849141-50776096f51c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt=""
+            />
 
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ducimus.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Accusantium, ducimus.
             </p>
             <span>1 min ago</span>
           </div>
@@ -65,7 +77,8 @@ function Chat() {
         <div className="message own">
           <div className="texts">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ducimus.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Accusantium, ducimus.
             </p>
             <span>1 min ago</span>
           </div>
@@ -74,16 +87,21 @@ function Chat() {
           <img src="./avatar.png" alt="" />
           <div className="texts">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ducimus.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Accusantium, ducimus.
             </p>
             <span>1 min ago</span>
           </div>
         </div>
         <div className="message own">
           <div className="texts">
-          <img src="https://images.unsplash.com/photo-1731978009363-21fa723e2cbe?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+            <img
+              src="https://images.unsplash.com/photo-1731978009363-21fa723e2cbe?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt=""
+            />
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ducimus.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Accusantium, ducimus.
             </p>
             <span>1 min ago</span>
           </div>
@@ -92,11 +110,13 @@ function Chat() {
           <img src="./avatar.png" alt="" />
           <div className="texts">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ducimus.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Accusantium, ducimus.
             </p>
             <span>1 min ago</span>
           </div>
         </div>
+        <div ref={endRef}></div>
       </div>
       <div className="bottom">
         <div className="icons">
