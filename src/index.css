@@ -12,6 +12,8 @@ body {
   justify-content: center;
   height: 100vh;
   color: white;
+  /* extra style */
+  overflow-x: hidden;
 }
 
 .container{
