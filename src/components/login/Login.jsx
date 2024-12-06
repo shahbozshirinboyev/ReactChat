@@ -69,8 +69,8 @@ function Login() {
       <div className="item">
         <h2>Welcome back</h2>
         <form action="" onSubmit={handleLogin}>
-          <input type="text" placeholder="Email" name="email" />
-          <input type="password" placeholder="Password" name="password" />
+          <input type="text" autoComplete="email" placeholder="Email" name="email" />
+          <input type="password" autoComplete="current-password"  placeholder="Password" name="password" />
           <button disabled={loading}>
             {loading ? "Loading..." : "Sign In"}
           </button>
@@ -90,9 +90,9 @@ function Login() {
             style={{ display: "none" }}
             onChange={handleAvatar}
           />
-          <input type="text" placeholder="Username" name="username" />
-          <input type="text" placeholder="Email" name="email" />
-          <input type="password" placeholder="Password" name="password" />
+          <input type="text" placeholder="Username" autoComplete="username" name="username" />
+          <input type="text" placeholder="Email" autoComplete="email" name="email" />
+          <input type="password" placeholder="Password" autoComplete="current-password" name="password" />
           <button disabled={loading}>
             {loading ? "Loading..." : "Sign Up"}
           </button>
