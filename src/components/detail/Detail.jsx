@@ -1,4 +1,5 @@
 import "./detail.css";
+import { auth } from "../../lib/firebase";
 
 function Detail() {
   return (
@@ -70,10 +71,6 @@ function Detail() {
               </div>
               <img src="./download.png" alt="" className="icon" />
             </div>
-
-            
-
-            
           </div>
         </div>
         <div className="option">
@@ -83,7 +80,7 @@ function Detail() {
           </div>
         </div>
         <button>Block User</button>
-        <button className="logout">Logout</button>
+        <button className="logout" onClick={()=>auth.signOut()}>Logout</button>
       </div>
     </div>
   );

@@ -9,13 +9,11 @@ import { auth } from "./lib/firebase";
 import { useUserStore } from "./lib/userStore";
 
 const App = () => {
-  const { currentUser, isLoading, fetchUserInfo } = useUserStore(); // Call the hook here
+  const { currentUser, isLoading, fetchUserInfo } = useUserStore();
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        fetchUserInfo(user.uid); // Ensure user.uid is passed correctly
-      }
+      fetchUserInfo(user?.uid);
     });
     return () => {
       unSub();
