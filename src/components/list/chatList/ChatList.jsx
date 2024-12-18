@@ -12,21 +12,40 @@ function ChatList() {
   const { currentUser } = useUserStore();
 
   useEffect(() => {
+    if (!currentUser?.id) return;
+
     const unSub = onSnapshot(doc(db, "userchats", currentUser.id), async(res) => {
-      const items = res.data().chats;
-      const promises = items.map(async(item)=> {
-        const userDocRef = doc(db, "users", item.receiverId);
-        const userDocSnap = await getDoc(userDocRef);
-        const user = userDocSnap.data()
-        return { ...item, user };
-      });
-      const chatData = await Promise.all(promises)
-      setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+      try {
+        const data = res.data();
+        if (!data) {
+          setChats([]);
+          return;
+        }
+        
+        const items = data.chats || [];
+        const promises = items.map(async(item) => {
+          try {
+            const userDocRef = doc(db, "users", item.receiverId);
+            const userDocSnap = await getDoc(userDocRef);
+            const user = userDocSnap.data()
+            return { ...item, user };
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+            return { ...item, user: null };
+          }
+        });
+        const chatData = await Promise.all(promises)
+        setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+      } catch (error) {
+        console.error("Error in chat subscription:", error);
+        setChats([]);
+      }
     });
+    
     return () => {
       unSub();
     };
-  }, [currentUser.id]);
+  }, [currentUser?.id]);
 
   return (
     <div className="chatList">
@@ -45,15 +64,15 @@ function ChatList() {
         />
       </div>
 
-      {chats.map((chat) => {
+      {chats.map((chat) => (
         <div key={chat.chatId} className="item">
-          <img src="./avatar.png" alt="" />
+          <img src={chat.user?.avatar || "./avatar.png"} alt="" />
           <div className="texts">
-            <span>Hane Doe</span>
-            <p>{chat.lastMessage}</p>
+            <span>{chat.user?.username || "Unknown User"}</span>
+            <p>{chat.lastMessage || "No messages yet"}</p>
           </div>
-        </div>;
-      })}
+        </div>
+      ))}
 
       {addMode && <AddUser />}
     </div>
