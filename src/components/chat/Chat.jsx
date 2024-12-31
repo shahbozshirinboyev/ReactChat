@@ -44,6 +44,11 @@ function Chat() {
     e.preventDefault();
     if (text === "") return;
     try {
+      if (!chatId) {
+        console.error("chatId aniqlanmagan yoki noto‘g‘ri");
+        console.log(chatId)
+        return;
+      }
       await updateDoc(doc(db, "chats", chatId), {
         messages: arrayUnion({
           senderId: currentUser.id,
