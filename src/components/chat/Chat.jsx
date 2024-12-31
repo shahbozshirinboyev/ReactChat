@@ -21,6 +21,8 @@ function Chat() {
   const { currentUser } = useUserStore();
   const { chatId, user} = useChatStore();
 
+  console.log(chat)
+
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
@@ -41,47 +43,47 @@ function Chat() {
   };
 
   const handleSend = async () => {
-
-    console.log(text)
-    console.log(chatId)
-
     if (text === "") return;
-    
+  
     try {
+      // Yangi xabarni `chats` kolleksiyasiga qo'shish
       await updateDoc(doc(db, "chats", chatId), {
         messages: arrayUnion({
           senderId: currentUser.id,
           text,
-          createAt: new Date(),
+          createAt: Date.now(),
         }),
       });
-
-      const userIDs = [currentUser.id, user.id]
-      userIDs.forEach(async (id)=> {
-
-      
-      const userChatsRef = doc(db, "userChats", id);
-      const userChatsSnapshot = await getDoc(userChatsRef);
-
-      if (userChatsSnapshot.exists()) {
-        const userChatsData = userChatsSnapshot.data();
-        const chatIndex = userChatsData.chats.findIndex(
-          (c) => c.chatId === chatId
-        );
-        userChatsData[chatIndex].lastMessage = text;
-        userChatsData[chatIndex].isSeen = id === currentUser.id ? true : false;
-        userChatsData[chatIndex].updatedAt = Data.now();
-
-        await updateDoc(userChatsRef, {
-          chats: userChatsData.chats,
-
-        })
-      }
-    })
+  
+      const userIDs = [currentUser.id, user.id];
+      userIDs.forEach(async (id) => {
+        const userChatsRef = doc(db, "userChats", id);
+        const userChatsSnapshot = await getDoc(userChatsRef);
+  
+        if (userChatsSnapshot.exists()) {
+          const userChatsData = userChatsSnapshot.data();
+          const chatIndex = userChatsData.chats.findIndex(
+            (c) => c.chatId === chatId
+          );
+  
+          if (chatIndex !== -1) {
+            userChatsData.chats[chatIndex].lastMessage = text;
+            userChatsData.chats[chatIndex].isSeen = id === currentUser.id;
+            userChatsData.chats[chatIndex].updatedAt = Date.now();
+  
+            await updateDoc(userChatsRef, {
+              chats: userChatsData.chats,
+            });
+          }
+        }
+      });
+  
+      setText(""); // Inputni tozalash
     } catch (error) {
-      console.log(error);
+      console.error("Xatolik yuz berdi:", error);
     }
   };
+  
 
   return (
     <div className="chat">
@@ -100,18 +102,18 @@ function Chat() {
         </div>
       </div>
       <div className="center">
-        {chat?.messages?.map((message) => {
-          <div key={message?.createAt} className="message">
-            <img src="./avatar.png" alt="" />
+        {chat?.messages?.map((message) => (
+          <div key={message.createAt} className="message own">
+            {/* <img src="./avatar.png" alt="" /> */}
             <div className="texts">
               {message?.img && (
-                <img src={message?.img} alt={message?.createAt} />
+                <img src={message.img} />
               )}
-              <p>{message?.text}</p>
+              <p>{message.text}</p>
               {/* <span>{message.createAt}</span> */}
             </div>
-          </div>;
-        })}
+          </div>)
+        )}
         <div ref={endRef}></div>
       </div>
       <div className="bottom">
