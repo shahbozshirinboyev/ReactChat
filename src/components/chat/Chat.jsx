@@ -18,6 +18,7 @@ function Chat() {
   }, []);
 
   useEffect(() => {
+    if (!chatId) return;
     const unSub = onSnapshot(doc(db, "chats", chatId), (res)=>{
       setChat(res.data())
     })
