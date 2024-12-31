@@ -19,13 +19,13 @@ function Chat() {
 
   useEffect(() => {
     if (!chatId) return;
-    const unSub = onSnapshot(doc(db, "chats", chatId), (res)=>{
-      setChat(res.data())
-    })
-    return() => { unSub(); }
-  }, [chatId])
-  
-  console.log(chat)
+    const unSub = onSnapshot(doc(db, "chats", chatId), (res) => {
+      setChat(res.data());
+    });
+    return () => {
+      unSub();
+    };
+  }, [chatId]);
 
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
@@ -48,91 +48,18 @@ function Chat() {
         </div>
       </div>
       <div className="center">
-        <div className="message own">
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium, ducimus.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium, ducimus.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium, ducimus.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <img
-              src="https://images.unsplash.com/photo-1733246849141-50776096f51c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt=""
-            />
 
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium, ducimus.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium, ducimus.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium, ducimus.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <img
-              src="https://images.unsplash.com/photo-1731978009363-21fa723e2cbe?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt=""
-            />
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium, ducimus.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium, ducimus.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
+        {chat?.messages.map((message) => {
+          <div key={message?.createAt} className="message">
+            <img src="./avatar.png" alt="" />
+            <div className="texts">
+              { message.img && 
+              <img src={message.img} alt={message.createAt} />}
+              <p>{message?.text}</p>
+              {/* <span>{message.createAt}</span> */}
+            </div>
+          </div>;
+        })}
         <div ref={endRef}></div>
       </div>
       <div className="bottom">
