@@ -16,10 +16,11 @@ function Chat() {
   const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
-  const endRef = useRef(null);
-
+  const [img, setImg] = useState({file: null, url: ""});
+  
   const { currentUser } = useUserStore();
   const { chatId, user} = useChatStore();
+  const endRef = useRef(null);
 
   console.log(chat)
 
@@ -68,7 +69,7 @@ function Chat() {
   
           if (chatIndex !== -1) {
             userChatsData.chats[chatIndex].lastMessage = text;
-            userChatsData.chats[chatIndex].isSeen = id === currentUser.id;
+            userChatsData.chats[chatIndex].isSeen = id === currentUser.id ? true : false;
             userChatsData.chats[chatIndex].updatedAt = Date.now();
   
             await updateDoc(userChatsRef, {
