@@ -18,8 +18,8 @@ function Chat() {
   const [text, setText] = useState("");
   const endRef = useRef(null);
 
-  const { currentUser } = useUserStore;
-  const { chatId, user} = useChatStore;
+  const { currentUser } = useUserStore();
+  const { chatId, user} = useChatStore();
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -40,15 +40,14 @@ function Chat() {
     setOpen(false);
   };
 
-  const handleSend = async (e) => {
-    e.preventDefault();
+  const handleSend = async () => {
+
+    console.log(text)
+    console.log(chatId)
+
     if (text === "") return;
+    
     try {
-      if (!chatId) {
-        console.error("chatId aniqlanmagan yoki noto‘g‘ri");
-        console.log(chatId)
-        return;
-      }
       await updateDoc(doc(db, "chats", chatId), {
         messages: arrayUnion({
           senderId: currentUser.id,
