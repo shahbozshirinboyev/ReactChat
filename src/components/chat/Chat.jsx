@@ -17,13 +17,14 @@ function Chat() {
   const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
-  const [img, setImg] = useState({file: null, url: ""});
-  
+  const [img, setImg] = useState({ file: null, url: "" });
+
   const { currentUser } = useUserStore();
-  const { chatId, user} = useChatStore();
+  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
+    useChatStore();
   const endRef = useRef(null);
 
-  console.log(chat)
+  console.log(chat);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -57,9 +58,8 @@ function Chat() {
     if (text === "") return;
     let imgUrl = null;
 
-  
     try {
-      if(img.file){
+      if (img.file) {
         imgUrl = await upload(img.file);
       }
       // Yangi xabarni `chats` kolleksiyasiga qo'shish
@@ -68,48 +68,47 @@ function Chat() {
           senderId: currentUser.id,
           text,
           createAt: new Date(),
-          ...(imgUrl && {img: imgUrl})
+          ...(imgUrl && { img: imgUrl }),
         }),
       });
-  
+
       const userIDs = [currentUser.id, user.id];
       userIDs.forEach(async (id) => {
         const userChatsRef = doc(db, "userchats", id);
         const userChatsSnapshot = await getDoc(userChatsRef);
-  
+
         if (userChatsSnapshot.exists()) {
           const userChatsData = userChatsSnapshot.data();
           const chatIndex = userChatsData.chats.findIndex(
             (c) => c.chatId === chatId
           );
-  
+
           if (chatIndex !== -1) {
             userChatsData.chats[chatIndex].lastMessage = text;
-            userChatsData.chats[chatIndex].isSeen = id === currentUser.id ? true : false;
+            userChatsData.chats[chatIndex].isSeen =
+              id === currentUser.id ? true : false;
             userChatsData.chats[chatIndex].updatedAt = Date.now();
-  
+
             await updateDoc(userChatsRef, {
               chats: userChatsData.chats,
             });
           }
         }
       });
-  
     } catch (error) {
       console.error("Xatolik yuz berdi:", error);
     }
-    setImg({file: null, img: ""})
+    setImg({ file: null, img: "" });
     setText(""); // Inputni tozalash
   };
-  
 
   return (
     <div className="chat">
       <div className="top">
         <div className="user">
-          <img src="./avatar.png" alt="" />
+          <img src={user?.avatar || "./avatar.png"} alt="" />
           <div className="texts">
-            <span>Jane Doe</span>
+            <span>{user?.username}</span>
             <p>Lorem ipsum dolor sit amet.</p>
           </div>
         </div>
@@ -121,24 +120,27 @@ function Chat() {
       </div>
       <div className="center">
         {chat?.messages?.map((message) => (
-          <div key={message.createAt} className="message own">
+          <div
+            key={message.createAt}
+            className={
+              message.senderId === currentUser?.id ? "message own" : "message"
+            }
+          >
             {/* <img src="./avatar.png" alt="" /> */}
             <div className="texts">
-              {message?.img && (
-                <img src={message.img} />
-              )}
+              {message?.img && <img src={message.img} />}
               <p>{message.text}</p>
               {/* <span>{message.createAt}</span> */}
             </div>
-          </div>)
-        )}
-        {
-          img.url && <div className="message own">
+          </div>
+        ))}
+        {img.url && (
+          <div className="message own">
             <div className="texts">
               <img src={img.url} alt="" />
             </div>
           </div>
-        }
+        )}
         <div ref={endRef}></div>
       </div>
       <div className="bottom">
@@ -146,17 +148,27 @@ function Chat() {
           <label htmlFor="file">
             <img src="./img.png" alt="" />
           </label>
-          <input type="file" id="file" style={{display: "none"}} onChange={handleImg} />
+          <input
+            type="file"
+            id="file"
+            style={{ display: "none" }}
+            onChange={handleImg}
+          />
           <img src="./camera.png" alt="" />
           <img src="./mic.png" alt="" />
         </div>
         <input
           type="text"
           value={text}
-          placeholder="Type a message..."
+          placeholder={
+            isCurrentUserBlocked || isReceiverBlocked
+              ? "You cannot send a message..."
+              : "Type a message..."
+          }
           onChange={(e) => {
             setText(e.target.value);
           }}
+          disabled={isCurrentUserBlocked || isReceiverBlocked}
         />
         <div className="emoji">
           <img
@@ -170,7 +182,11 @@ function Chat() {
             <EmojiPicker open={open} onEmojiClick={handleEmoji} />
           </div>
         </div>
-        <button className="sendButton" onClick={handleSend}>
+        <button
+          className="sendButton"
+          onClick={handleSend}
+          disabled={isCurrentUserBlocked || isReceiverBlocked}
+        >
           Send
         </button>
       </div>

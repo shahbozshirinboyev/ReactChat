@@ -101,7 +101,6 @@ const ChatList = () => {
                 ? "./avatar.png"
                 : chat.user.avatar || "./avatar.png"
             }
-            alt=""
           />
           <div className="texts">
             <span>
