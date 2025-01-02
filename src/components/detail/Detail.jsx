@@ -30,7 +30,7 @@ function Detail() {
         <p>Lorem ipsum dolor sit amet.</p>
       </div>
       <div className="info">
-        <div className="option">
+        {/* <div className="option">
           <div className="title">
             <span>Chat Settings</span>
             <img src="./arrowUp.png" alt="" />
@@ -98,7 +98,7 @@ function Detail() {
             <span>Shared Files</span>
             <img src="./arrowUp.png" alt="" />
           </div>
-        </div>
+        </div> */}
         <button onClick={handleBlock}>
           {isCurrentUserBlocked
             ? "You are blocked!"

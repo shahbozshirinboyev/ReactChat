@@ -28,7 +28,7 @@ function Chat() {
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  }, [chat?.messages]);
 
   useEffect(() => {
     if (!chatId) return;
