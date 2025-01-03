@@ -13,6 +13,12 @@
     justify-content: space-between;
     border-bottom: 1px solid #dddddd35;
 
+    .user-control{
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+    }
+
     .user {
       display: flex;
       align-items: center;
@@ -166,5 +172,27 @@
         cursor: not-allowed;
       }
     }
+  }
+}
+
+button{
+  padding: 10px;
+  background-color: rgba(230, 74, 105, 0.553);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover{
+      background-color: rgba(220, 20, 60, 0.796);
+  }
+
+  &.logout{
+      padding: 10px;
+      background-color: #1a73e8bd;
+      
+      &:hover{
+          background-color: #1a73e8;
+      }
   }
 }

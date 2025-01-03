@@ -3,6 +3,7 @@ import EmojiPicker from "emoji-picker-react";
 import "./chat.css";
 import {
   arrayUnion,
+  arrayRemove,
   doc,
   getDoc,
   onSnapshot,
@@ -20,8 +21,9 @@ function Chat() {
   const [img, setImg] = useState({ file: null, url: "" });
 
   const { currentUser } = useUserStore();
-  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
+  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock } =
     useChatStore();
+
   const endRef = useRef(null);
 
   console.log(chat);
@@ -102,6 +104,19 @@ function Chat() {
     setText(""); // Inputni tozalash
   };
 
+  const handleBlock = async () => {
+    if (!user) return;
+    const userDocRef = doc(db, "users", currentUser.id);
+    try {
+      await updateDoc(userDocRef, {
+        blocked: isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
+      });
+      changeBlock();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="chat">
       <div className="top">
@@ -111,8 +126,15 @@ function Chat() {
             <span>{user?.username}</span>
             <p>Lorem ipsum dolor sit amet.</p>
           </div>
-          
         </div>
+        <button onClick={handleBlock}>
+          {isCurrentUserBlocked
+            ? "You are blocked!"
+            : isReceiverBlocked
+            ? "User blocked"
+            : "Block user"}
+        </button>
+
         {/* <div className="icons">
           <img src="./phone.png" alt="" />
           <img src="./video.png" alt="" />
