@@ -166,6 +166,7 @@ function Chat() {
         )}
         <div ref={endRef}></div>
       </div>
+      
       <div className="bottom">
         <div className="icons">
           <label htmlFor="file">
