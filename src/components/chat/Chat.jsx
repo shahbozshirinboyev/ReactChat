@@ -112,11 +112,11 @@ function Chat() {
             <p>Lorem ipsum dolor sit amet.</p>
           </div>
         </div>
-        <div className="icons">
+        {/* <div className="icons">
           <img src="./phone.png" alt="" />
           <img src="./video.png" alt="" />
           <img src="./info.png" alt="" />
-        </div>
+        </div> */}
       </div>
       <div className="center">
         {chat?.messages?.map((message) => (
@@ -154,8 +154,8 @@ function Chat() {
             style={{ display: "none" }}
             onChange={handleImg}
           />
-          <img src="./camera.png" alt="" />
-          <img src="./mic.png" alt="" />
+          {/* <img src="./camera.png" alt="" /> */}
+          {/* <img src="./mic.png" alt="" /> */}
         </div>
         <input
           type="text"
