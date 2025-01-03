@@ -24,14 +24,20 @@ const App = () => {
 
   console.log(currentUser);
 
-  if (isLoading) return <div className="loading">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="loading">
+        <div class="loader"></div>
+        <div>Loading...</div>
+      </div>
+    );
   return (
     <div className="container">
       {currentUser ? (
         <>
           <List />
-          { chatId && <Chat />}
-          { chatId && <Detail />}
+          {chatId && <Chat />}
+          {chatId && <Detail />}
         </>
       ) : (
         <Login />
