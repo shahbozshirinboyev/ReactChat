@@ -26,7 +26,7 @@ function Chat() {
 
   const endRef = useRef(null);
 
-  console.log(chat);
+  // console.log(chat);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
