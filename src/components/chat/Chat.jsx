@@ -111,6 +111,7 @@ function Chat() {
             <span>{user?.username}</span>
             <p>Lorem ipsum dolor sit amet.</p>
           </div>
+          
         </div>
         {/* <div className="icons">
           <img src="./phone.png" alt="" />
